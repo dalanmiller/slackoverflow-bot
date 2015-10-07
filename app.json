@@ -1,0 +1,16 @@
+{
+  "name": "SO Unanswered Bot",
+  "description": "A SlackBot to help you find unanswered StackOverflow questions for your team",
+  "repository": "https://github.com/dalanmiller/so-unanswered-bot",
+  "keywords": ["python", "flask", "stackoverflow", "slack"],
+  "success_url": "/status",
+  "env": {
+    "SLACK_API_TOKEN": {
+      "description": "An auth token from the Slack API - https://rethinkdb-team.slack.com/services/new/bot"
+    },
+    "STACKEXCHANGE_APP_TOKEN" : {
+      "description" : "In order to make queries with higher limit caps you need a StackExchange API key - https://stackapps.com/apps/oauth/register"
+    }
+
+  }
+}
