@@ -76,8 +76,9 @@ app = Flask(__name__)
 @app.route("/status", methods=["GET"])
 def app_status():
 
-    slack_ready = os.getenv("SLACK_API_TOKEN", False)
-    stackoverflow_ready = os.getenv("STACKEXCHANGE_APP_TOKEN", False)
+
+    slack_ready = True if "SLACK_API_TOKEN" in os.environ else False
+    stackoverflow_ready = True if "STACKEXCHANGE_APP_TOKEN" in os.environ else False
 
     response_text = u"""
     <div style="margin-top:10%;margin-left:auto; margin-right:auto; width:20%">
