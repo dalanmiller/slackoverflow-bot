@@ -6,7 +6,8 @@ The purpose of this app is to be able to get a list of unanswered questions on S
 
 This bot just requires two API tokens. One from Slack as well as another one from the StackExchange API. You can get them here:
 
-### Slack API (I recommend a Bot integration)
+### Slack API
+(I recommend a Bot integration)
 https://rethinkdb-team.slack.com/services/new/bot
 
 ### StackExchange Token
