@@ -15,4 +15,4 @@ https://stackapps.com/users/login?returnurl=/apps/oauth/register
 
 Once you have these two things handy, you're ready to deploy!
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/heroku/node-js-sample)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/dalanmiller/so-unanswered-bot)
