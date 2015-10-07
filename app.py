@@ -47,7 +47,9 @@ message_sans_owner = """*{title}*
 
 def query_so(n=10, tags=[], order="desc", sort="creation"):
 
-    unanswered_questions = so.questions.no_answers(order=order, sort=sort, tagged=tags).fetch()
+    return so.questions.no_answers(order=order, sort=sort, tagged=tags).fetch()
+
+def create_question_text(unanswered_questions):
 
     total_output = """
     *SO Questions w/o responses:*\n\n
@@ -94,13 +96,19 @@ def app_status():
 @app.route("/", methods=["POST"])
 def unanswered_questions():
 
+    parameters = request.json()
+
+    print(parameters)
+
     if "n" in request.args:
         query = request.args.to_dict()
         query["n"] = int(query["n"])
 
-        response_text = query_so(**query)
+        unanswered_questions = query_so(**query)
+        response_text = create_question_text(unanswered_questions)
     else:
-        response_text = query_so(**request.args)
+        unanswered_questions = query_so(**request.args)
+        response_text = create_question_text(unanswered_questions)
 
     response = make_response(response_text)
 
