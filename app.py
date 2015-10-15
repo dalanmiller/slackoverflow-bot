@@ -98,7 +98,7 @@ def unanswered_questions():
         response_text = create_question_text(unanswered_questions)
 
         payload = dict(
-            channel = request.values.get("channel"),
+            channel = "#{}".format(request.values.get("channel_name")),
             text = response_text,
         )
 
