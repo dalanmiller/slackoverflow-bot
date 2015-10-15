@@ -5,8 +5,8 @@
   "keywords": ["python", "flask", "stackoverflow", "slack"],
   "success_url": "/status",
   "env": {
-    "SLACK_API_TOKEN": {
-      "description": "An auth token from the Slack API - https://rethinkdb-team.slack.com/services/new/bot"
+    "SLACK_TOKEN": {
+      "description": "An auth token from the Slack Slash command integration - https://rethinkdb-team.slack.com/services/new/slash-commands"
     },
     "STACKEXCHANGE_APP_TOKEN" : {
       "description" : "In order to make queries with higher limit caps you need a StackExchange API key - https://stackapps.com/apps/oauth/register"

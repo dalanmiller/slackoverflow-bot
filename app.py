@@ -55,7 +55,7 @@ def create_question_text(unanswered_questions):
     *SO Questions w/o responses:*\n\n
     """
 
-    for question in unanswered_questions[:n]:
+    for question in unanswered_questions:
 
         question.body = question.body[:250] + "..." if len(question.body) > 250 else question.body
 
@@ -79,7 +79,7 @@ app = Flask(__name__)
 def app_status():
 
 
-    slack_ready = True if "SLACK_API_TOKEN" in os.environ else False
+    slack_ready = True if "SLACK_TOKEN" in os.environ else False
     stackoverflow_ready = True if "STACKEXCHANGE_APP_TOKEN" in os.environ else False
 
     response_text = u"""
@@ -96,23 +96,16 @@ def app_status():
 @app.route("/", methods=["POST"])
 def unanswered_questions():
 
-    parameters = request.json()
+    if request.values["token"] == os.environ["SLACK_TOKEN"]:
 
-    print(parameters)
+        tags = request.values["text"].split(",")
 
-    if "n" in request.args:
-        query = request.args.to_dict()
-        query["n"] = int(query["n"])
-
-        unanswered_questions = query_so(**query)
+        unanswered_questions = query_so(tags = tags)
         response_text = create_question_text(unanswered_questions)
+
+        return make_response(response_text)
     else:
-        unanswered_questions = query_so(**request.args)
-        response_text = create_question_text(unanswered_questions)
-
-    response = make_response(response_text)
-
-    return response
+        return make_response("", 403)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run("0.0.0.0", debug=True)
