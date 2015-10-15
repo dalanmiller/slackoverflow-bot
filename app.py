@@ -30,10 +30,6 @@ so.impose_throttling = True
 so.throttle_stop = False
 so.be_inclusive()
 
-SLACK_TOKEN = os.getenv("SLACK_API_TOKEN")
-sc = SlackClient(SLACK_TOKEN)
-#user_love_id = "C02BP3MQB"
-
 message = """*<{url}|{title}>* by {owner.display_name}
 {creation_date}
 {body}
