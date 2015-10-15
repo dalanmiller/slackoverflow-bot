@@ -1,6 +1,7 @@
 import stackexchange
 import builtins
 import os
+import requests
 from flask import Flask, request, make_response
 from json import loads
 from slackclient import SlackClient
@@ -33,29 +34,28 @@ SLACK_TOKEN = os.getenv("SLACK_API_TOKEN")
 sc = SlackClient(SLACK_TOKEN)
 #user_love_id = "C02BP3MQB"
 
-message = """*{title}* by {owner.display_name}
+message = """*<{url}|{title}>* by {owner.display_name}
 {creation_date}
-{url}
 {body}
 """
 
-message_sans_owner = """*{title}*
+message_sans_owner = """*<{url}|{title}>*
 {creation_date}
-{url}
 {body}
 """
 
-def query_so(n=10, tags=[], order="desc", sort="creation"):
+def query_so(tags=[], order="desc", sort="creation"):
 
     return so.questions.no_answers(order=order, sort=sort, tagged=tags).fetch()
 
 def create_question_text(unanswered_questions):
 
     total_output = """
-    *SO Questions w/o responses:*\n\n
-    """
+    *SO Questions w/o responses:*
 
-    for question in unanswered_questions:
+"""
+
+    for question in unanswered_questions[:10]:
 
         question.body = question.body[:250] + "..." if len(question.body) > 250 else question.body
 
@@ -95,17 +95,29 @@ def app_status():
 
 @app.route("/", methods=["POST"])
 def unanswered_questions():
-
-    if request.values["token"] == os.environ["SLACK_TOKEN"]:
-
+    if request.values["token"] == os.environ["SLACK_SLASH_TOKEN"]:
         tags = request.values["text"].split(",")
 
         unanswered_questions = query_so(tags = tags)
         response_text = create_question_text(unanswered_questions)
 
-        return make_response(response_text)
+        payload = dict(
+            channel = request.values.get("channel"),
+            text = response_text,
+        )
+
+        print(os.environ["SLACK_WEBHOOK_URL"])
+        r = requests.post(
+            os.environ["SLACK_WEBHOOK_URL"],
+            json=payload,
+            headers= {"Content-Type": "application/json"}
+        )
+        print(r.content)
+
+        print("return response")
+        return ("", 200)
     else:
-        return make_response("", 403)
+        return ("", 403)
 
 if __name__ == "__main__":
     app.run("0.0.0.0", debug=True)
