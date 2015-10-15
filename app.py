@@ -106,15 +106,12 @@ def unanswered_questions():
             text = response_text,
         )
 
-        print(os.environ["SLACK_WEBHOOK_URL"])
         r = requests.post(
             os.environ["SLACK_WEBHOOK_URL"],
             json=payload,
             headers= {"Content-Type": "application/json"}
         )
-        print(r.content)
 
-        print("return response")
         return ("", 200)
     else:
         return ("", 403)
